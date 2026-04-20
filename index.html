@@ -1,0 +1,1373 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bestiário & Personagens</title>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700;900&family=Cinzel:wght@400;600;700&family=Crimson+Pro:ital,wght@0,300;0,400;0,600;1,300;1,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0a0f;
+    --surface: #111118;
+    --card: #16161f;
+    --border: #2a2a40;
+    --gold: #c9a84c;
+    --gold-light: #f0d080;
+    --gold-dim: #7a6030;
+    --red: #c0392b;
+    --red-bright: #e74c3c;
+    --green: #27ae60;
+    --green-bright: #2ecc71;
+    --blue: #2980b9;
+    --blue-bright: #3498db;
+    --purple: #8e44ad;
+    --purple-bright: #9b59b6;
+    --orange: #d35400;
+    --orange-bright: #e67e22;
+    --teal: #16a085;
+    --teal-bright: #1abc9c;
+    --text: #e8e0d0;
+    --text-dim: #9090a0;
+    --text-muted: #5a5a70;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Crimson Pro', Georgia, serif;
+    font-size: 17px;
+    line-height: 1.6;
+    min-height: 100vh;
+  }
+
+  /* Background texture */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+      radial-gradient(ellipse 80% 50% at 20% 20%, rgba(201,168,76,0.04) 0%, transparent 60%),
+      radial-gradient(ellipse 60% 80% at 80% 80%, rgba(139,68,173,0.04) 0%, transparent 60%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .container { max-width: 1300px; margin: 0 auto; padding: 0 24px; position: relative; z-index: 1; }
+
+  /* ── HEADER ── */
+  header {
+    text-align: center;
+    padding: 60px 24px 40px;
+    position: relative;
+    overflow: hidden;
+  }
+  header::after {
+    content: '';
+    display: block;
+    width: 600px;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--gold), transparent);
+    margin: 24px auto 0;
+  }
+  .header-ornament {
+    font-size: 13px;
+    letter-spacing: 6px;
+    color: var(--gold-dim);
+    text-transform: uppercase;
+    font-family: 'Cinzel', serif;
+    margin-bottom: 16px;
+  }
+  h1 {
+    font-family: 'Cinzel Decorative', serif;
+    font-size: clamp(32px, 6vw, 64px);
+    font-weight: 900;
+    background: linear-gradient(135deg, var(--gold-dim) 0%, var(--gold-light) 50%, var(--gold-dim) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    letter-spacing: 2px;
+    line-height: 1.1;
+    text-shadow: none;
+  }
+  .header-sub {
+    font-family: 'Cinzel', serif;
+    font-size: 15px;
+    color: var(--text-muted);
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    margin-top: 12px;
+  }
+
+  /* ── NAV ── */
+  nav {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    justify-content: center;
+    padding: 24px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: rgba(10,10,15,0.92);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+  }
+  nav a {
+    font-family: 'Cinzel', serif;
+    font-size: 11px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--text-dim);
+    text-decoration: none;
+    padding: 6px 16px;
+    border: 1px solid var(--border);
+    border-radius: 2px;
+    transition: all 0.25s;
+  }
+  nav a:hover { color: var(--gold); border-color: var(--gold-dim); background: rgba(201,168,76,0.05); }
+
+  /* ── SECTION ── */
+  .section { padding: 60px 0 20px; }
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    margin-bottom: 8px;
+  }
+  .section-line {
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(90deg, var(--border), transparent);
+  }
+  .section-line.left { background: linear-gradient(90deg, transparent, var(--border)); }
+  .section-title {
+    font-family: 'Cinzel Decorative', serif;
+    font-size: clamp(18px, 3vw, 26px);
+    font-weight: 700;
+    white-space: nowrap;
+  }
+  .section-rule {
+    font-family: 'Crimson Pro', serif;
+    font-style: italic;
+    font-size: 15px;
+    color: var(--text-muted);
+    text-align: center;
+    margin-bottom: 40px;
+    letter-spacing: 0.5px;
+  }
+
+  /* Faction colors */
+  .faction-goblin .section-title { color: var(--green); }
+  .faction-anao .section-title { color: var(--orange); }
+  .faction-astral .section-title { color: var(--blue); }
+  .faction-titã .section-title { color: var(--purple); }
+  .faction-elfo .section-title { color: var(--teal); }
+  .faction-draconico .section-title { color: var(--red); }
+  .faction-meio-animal .section-title { color: var(--orange-bright); }
+  .faction-especial .section-title { color: var(--gold); }
+
+  /* ── GRID ── */
+  .cards-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+    gap: 24px;
+  }
+  .cards-grid.boss-grid {
+    grid-template-columns: repeat(auto-fill, minmax(480px, 1fr));
+  }
+
+  /* ── CARD ── */
+  .card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    overflow: hidden;
+    transition: transform 0.2s, box-shadow 0.2s;
+    position: relative;
+  }
+  .card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 40px rgba(0,0,0,0.5);
+  }
+  .card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+  }
+
+  /* Faction accent line */
+  .faction-goblin .card::before { background: var(--green); }
+  .faction-anao .card::before { background: var(--orange); }
+  .faction-astral .card::before { background: var(--blue); }
+  .faction-titã .card::before { background: var(--purple); }
+  .faction-elfo .card::before { background: var(--teal); }
+  .faction-draconico .card::before { background: var(--red); }
+  .faction-meio-animal .card::before { background: var(--orange-bright); }
+  .faction-especial .card::before { background: var(--gold); }
+
+  .card-inner { padding: 24px; }
+
+  .card-name {
+    font-family: 'Cinzel', serif;
+    font-size: 20px;
+    font-weight: 700;
+    margin-bottom: 4px;
+    line-height: 1.2;
+  }
+  .card-badge {
+    display: inline-block;
+    font-family: 'Cinzel', serif;
+    font-size: 10px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    padding: 2px 10px;
+    border-radius: 2px;
+    margin-bottom: 16px;
+    border: 1px solid;
+  }
+  .badge-goblin { color: var(--green); border-color: var(--green); background: rgba(39,174,96,0.1); }
+  .badge-anao { color: var(--orange); border-color: var(--orange); background: rgba(211,84,0,0.1); }
+  .badge-astral { color: var(--blue); border-color: var(--blue); background: rgba(41,128,185,0.1); }
+  .badge-titã { color: var(--purple); border-color: var(--purple); background: rgba(142,68,173,0.1); }
+  .badge-elfo { color: var(--teal); border-color: var(--teal); background: rgba(22,160,133,0.1); }
+  .badge-draconico { color: var(--red); border-color: var(--red); background: rgba(192,57,43,0.1); }
+  .badge-animal { color: var(--orange-bright); border-color: var(--orange-bright); background: rgba(230,126,34,0.1); }
+  .badge-boss { color: var(--gold); border-color: var(--gold); background: rgba(201,168,76,0.1); }
+  .badge-npc { color: var(--text-muted); border-color: var(--text-muted); background: rgba(144,144,160,0.1); }
+
+  /* Vitals bar */
+  .vitals {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 16px;
+    flex-wrap: wrap;
+  }
+  .vital {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background: rgba(0,0,0,0.3);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 8px 14px;
+    min-width: 70px;
+    flex: 1;
+  }
+  .vital-label {
+    font-family: 'Cinzel', serif;
+    font-size: 9px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin-bottom: 2px;
+  }
+  .vital-value {
+    font-family: 'Cinzel', serif;
+    font-size: 22px;
+    font-weight: 700;
+    line-height: 1;
+  }
+  .vital-hp .vital-value { color: var(--red-bright); }
+  .vital-actions .vital-value { color: var(--gold); }
+
+  /* Stats grid */
+  .stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 6px;
+    margin-bottom: 16px;
+  }
+  .stat {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: rgba(0,0,0,0.2);
+    border-radius: 3px;
+    padding: 5px 10px;
+  }
+  .stat-name {
+    font-family: 'Cinzel', serif;
+    font-size: 10px;
+    letter-spacing: 1px;
+    color: var(--text-muted);
+    text-transform: uppercase;
+  }
+  .stat-val {
+    font-family: 'Cinzel', serif;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text);
+  }
+  .stat-val.highlight { color: var(--gold-light); }
+
+  /* Divider */
+  .divider {
+    height: 1px;
+    background: var(--border);
+    margin: 14px 0;
+  }
+
+  /* Attacks */
+  .attacks-title {
+    font-family: 'Cinzel', serif;
+    font-size: 11px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin-bottom: 8px;
+  }
+  .attack {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 6px 0;
+    border-bottom: 1px solid rgba(42,42,64,0.5);
+  }
+  .attack:last-child { border-bottom: none; }
+  .attack-dot {
+    width: 5px; height: 5px;
+    border-radius: 50%;
+    background: var(--gold-dim);
+    margin-top: 7px;
+    flex-shrink: 0;
+  }
+  .attack-info { flex: 1; }
+  .attack-name {
+    font-family: 'Cinzel', serif;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text);
+  }
+  .attack-detail {
+    font-size: 13px;
+    color: var(--text-dim);
+    font-style: italic;
+    line-height: 1.4;
+  }
+  .dice {
+    font-family: 'Cinzel', serif;
+    font-size: 12px;
+    color: var(--red-bright);
+    font-style: normal;
+    font-weight: 600;
+  }
+  .cost {
+    font-family: 'Cinzel', serif;
+    font-size: 10px;
+    color: var(--gold-dim);
+    font-style: normal;
+    background: rgba(201,168,76,0.08);
+    border: 1px solid rgba(201,168,76,0.2);
+    border-radius: 2px;
+    padding: 1px 6px;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+
+  /* Passives */
+  .passives { margin-top: 12px; }
+  .passives-title {
+    font-family: 'Cinzel', serif;
+    font-size: 11px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin-bottom: 8px;
+  }
+  .passive {
+    display: flex;
+    gap: 8px;
+    padding: 5px 0;
+    font-size: 14px;
+    color: var(--text-dim);
+    border-bottom: 1px solid rgba(42,42,64,0.4);
+  }
+  .passive:last-child { border-bottom: none; }
+  .passive-icon { color: var(--purple-bright); flex-shrink: 0; }
+
+  /* Notes */
+  .card-note {
+    font-style: italic;
+    font-size: 14px;
+    color: var(--text-muted);
+    background: rgba(0,0,0,0.2);
+    border-left: 2px solid var(--gold-dim);
+    padding: 8px 12px;
+    margin-top: 12px;
+    border-radius: 0 3px 3px 0;
+  }
+
+  /* Special card: Masks */
+  .mask-card { border-color: var(--purple); }
+  .mask-card::before { background: linear-gradient(90deg, var(--purple), var(--blue)); }
+  .mask-icon { font-size: 28px; margin-bottom: 8px; }
+  .mask-bonus {
+    font-family: 'Cinzel', serif;
+    font-size: 13px;
+    color: var(--gold-light);
+    margin-bottom: 14px;
+    font-weight: 600;
+  }
+
+  /* NPC card */
+  .npc-card { opacity: 0.85; }
+  .missions { margin-top: 10px; }
+  .mission {
+    padding: 8px 10px;
+    margin-bottom: 6px;
+    background: rgba(0,0,0,0.2);
+    border-left: 2px solid var(--gold-dim);
+    border-radius: 0 3px 3px 0;
+  }
+  .mission-num {
+    font-family: 'Cinzel', serif;
+    font-size: 11px;
+    color: var(--gold-dim);
+    letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+  .mission-title {
+    font-family: 'Cinzel', serif;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text);
+    margin: 2px 0;
+  }
+  .mission-desc {
+    font-size: 14px;
+    color: var(--text-dim);
+    font-style: italic;
+  }
+
+  /* Boss card header */
+  .boss-header {
+    background: rgba(0,0,0,0.4);
+    padding: 16px 24px 0;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 0;
+  }
+  .boss-label {
+    font-family: 'Cinzel', serif;
+    font-size: 10px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--gold-dim);
+    margin-bottom: 4px;
+  }
+  .boss-meta {
+    font-size: 13px;
+    color: var(--text-muted);
+    font-style: italic;
+    padding-bottom: 14px;
+  }
+
+  /* Responsive */
+  @media (max-width: 700px) {
+    .cards-grid, .cards-grid.boss-grid { grid-template-columns: 1fr; }
+    .stats { grid-template-columns: repeat(2, 1fr); }
+  }
+
+  /* Scroll margin for nav */
+  section { scroll-margin-top: 70px; }
+
+  /* Footer */
+  footer {
+    text-align: center;
+    padding: 48px 24px;
+    color: var(--text-muted);
+    font-size: 13px;
+    font-family: 'Cinzel', serif;
+    letter-spacing: 2px;
+    border-top: 1px solid var(--border);
+    margin-top: 60px;
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-ornament">⚔ Compêndio de Criaturas ⚔</div>
+  <h1>Bestiário</h1>
+  <div class="header-sub">Registro de Personagens & Inimigos</div>
+</header>
+
+<nav>
+  <a href="#goblins">Goblins</a>
+  <a href="#anoes">Anões</a>
+  <a href="#astrais">Astrais</a>
+  <a href="#titãs">Titãs</a>
+  <a href="#mascaras">Máscaras</a>
+  <a href="#elfos">Elfos</a>
+  <a href="#draconicos">Dracônicos</a>
+  <a href="#meio-animais">Meio-Animais</a>
+  <a href="#npcs">NPCs</a>
+</nav>
+
+<!-- ══════════════════════════════════════════════ GOBLINS -->
+<section id="goblins" class="faction-goblin">
+<div class="container">
+  <div class="section">
+    <div class="section-header">
+      <div class="section-line left"></div>
+      <div class="section-title">🟢 Goblins</div>
+      <div class="section-line"></div>
+    </div>
+    <div class="section-rule">Atacam enquanto desviam — geralmente burros</div>
+
+    <div class="cards-grid">
+
+      <!-- Goblin comum -->
+      <div class="card">
+        <div class="card-inner">
+          <div class="card-name">Goblin</div>
+          <div class="card-badge badge-goblin">Inimigo Comum</div>
+          <div class="vitals">
+            <div class="vital vital-hp"><span class="vital-label">Vida</span><span class="vital-value">10</span></div>
+            <div class="vital vital-actions"><span class="vital-label">Ações</span><span class="vital-value">5</span></div>
+          </div>
+          <div class="stats">
+            <div class="stat"><span class="stat-name">Força</span><span class="stat-val">5</span></div>
+            <div class="stat"><span class="stat-name">Agil.</span><span class="stat-val highlight">10</span></div>
+            <div class="stat"><span class="stat-name">Pont.</span><span class="stat-val">0</span></div>
+            <div class="stat"><span class="stat-name">Intel.</span><span class="stat-val">0</span></div>
+            <div class="stat"><span class="stat-name">Vont.</span><span class="stat-val">0</span></div>
+            <div class="stat"><span class="stat-name">Resist.</span><span class="stat-val">0</span></div>
+          </div>
+          <div class="divider"></div>
+          <div class="attacks-title">Ataques</div>
+          <div class="attack">
+            <div class="attack-dot"></div>
+            <div class="attack-info">
+              <div class="attack-name">Facada</div>
+              <div class="attack-detail">Inflige <span class="dice">1d4</span> sangramento por <span class="dice">1d4</span> rodadas</div>
+            </div>
+            <span class="cost">1 ação</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Goblin com arco -->
+      <div class="card">
+        <div class="card-inner">
+          <div class="card-name">Goblin com Arco</div>
+          <div class="card-badge badge-goblin">Inimigo Comum</div>
+          <div class="vitals">
+            <div class="vital vital-hp"><span class="vital-label">Vida</span><span class="vital-value">10</span></div>
+            <div class="vital vital-actions"><span class="vital-label">Ações</span><span class="vital-value">2</span></div>
+          </div>
+          <div class="stats">
+            <div class="stat"><span class="stat-name">Força</span><span class="stat-val">0</span></div>
+            <div class="stat"><span class="stat-name">Agil.</span><span class="stat-val">5</span></div>
+            <div class="stat"><span class="stat-name">Pont.</span><span class="stat-val highlight">20</span></div>
+            <div class="stat"><span class="stat-name">Intel.</span><span class="stat-val">0</span></div>
+            <div class="stat"><span class="stat-name">Vont.</span><span class="stat-val">0</span></div>
+            <div class="stat"><span class="stat-name">Resist.</span><span class="stat-val">0</span></div>
+          </div>
+          <div class="divider"></div>
+          <div class="attacks-title">Ataques</div>
+          <div class="attack">
+            <div class="attack-dot"></div>
+            <div class="attack-info">
+              <div class="attack-name">Arcada</div>
+              <div class="attack-detail"><span class="dice">1d20</span></div>
+            </div>
+            <span class="cost">1 ação</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Goblin Campeão -->
+      <div class="card">
+        <div class="card-inner">
+          <div class="card-name">Goblin Campeão</div>
+          <div class="card-badge badge-goblin">Elite</div>
+          <div class="vitals">
+            <div class="vital vital-hp"><span class="vital-label">Vida</span><span class="vital-value">40</span></div>
+            <div class="vital vital-actions"><span class="vital-label">Ações</span><span class="vital-value">2</span></div>
+          </div>
+          <div class="stats">
+            <div class="stat"><span class="stat-name">Força</span><span class="stat-val highlight">10</span></div>
+            <div class="stat"><span class="stat-name">Agil.</span><span class="stat-val">5</span></div>
+            <div class="stat"><span class="stat-name">Pont.</span><span class="stat-val">0</span></div>
+            <div class="stat"><span class="stat-name">Intel.</span><span class="stat-val">0</span></div>
+            <div class="stat"><span class="stat-name">Vont.</span><span class="stat-val">0</span></div>
+            <div class="stat"><span class="stat-name">Resist.</span><span class="stat-val highlight">15</span></div>
+          </div>
+          <div class="divider"></div>
+          <div class="attacks-title">Ataques</div>
+          <div class="attack">
+            <div class="attack-dot"></div>
+            <div class="attack-info">
+              <div class="attack-name">Porrete</div>
+              <div class="attack-detail"><span class="dice">2d10</span></div>
+            </div>
+            <span class="cost">1 ação</span>
+          </div>
+          <div class="attack">
+            <div class="attack-dot"></div>
+            <div class="attack-info">
+              <div class="attack-name">Lançamento</div>
+            </div>
+            <span class="cost">1 ação</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Rei Goblin v1 -->
+      <div class="card">
+        <div class="card-inner">
+          <div class="card-name">Rei Goblin</div>
+          <div class="card-badge badge-boss">Boss — Fase 1</div>
+          <div class="vitals">
+            <div class="vital vital-hp"><span class="vital-label">Vida</span><span class="vital-value">50</span></div>
+            <div class="vital vital-actions"><span class="vital-label">Ações</span><span class="vital-value">2</span></div>
+          </div>
+          <div class="stats">
+            <div class="stat"><span class="stat-name">Força</span><span class="stat-val">10</span></div>
+            <div class="stat"><span class="stat-name">Agil.</span><span class="stat-val">5</span></div>
+            <div class="stat"><span class="stat-name">Pont.</span><span class="stat-val">0</span></div>
+            <div class="stat"><span class="stat-name">Intel.</span><span class="stat-val highlight">10</span></div>
+            <div class="stat"><span class="stat-name">Vont.</span><span class="stat-val">0</span></div>
+            <div class="stat"><span class="stat-name">Resist.</span><span class="stat-val highlight">20</span></div>
+          </div>
+          <div class="divider"></div>
+          <div class="attacks-title">Ataques</div>
+          <div class="attack">
+            <div class="attack-dot"></div>
+            <div class="attack-info">
+              <div class="attack-name">Arranhada</div>
+              <div class="attack-detail"><span class="dice">1d6 + 1d10</span></div>
+            </div>
+            <span class="cost">1 ação</span>
+          </div>
+          <div class="attack">
+            <div class="attack-dot"></div>
+            <div class="attack-info">
+              <div class="attack-name">Reforços</div>
+              <div class="attack-detail">Goblin Machine · Goblin Gigante · Dragão</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Rei Goblin v2 (mech) -->
+      <div class="card">
+        <div class="card-inner">
+          <div class="card-name">Rei Goblin — Mecânico</div>
+          <div class="card-badge badge-boss">Boss — Fase 2</div>
+          <div class="vitals">
+            <div class="vital vital-hp"><span class="vital-label">Vida</span><span class="vital-value">3</span></div>
+            <div class="vital vital-actions"><span class="vital-label">Ações</span><span class="vital-value">2</span></div>
+          </div>
+          <div class="stats">
+            <div class="stat"><span class="stat-name">Força</span><span class="stat-val">10</span></div>
+            <div class="stat"><span class="stat-name">Agil.</span><span class="stat-val">0</span></div>
+            <div class="stat"><span class="stat-name">Pont.</span><span class="stat-val highlight">10</span></div>
+            <div class="stat"><span class="stat-name">Intel.</span><span class="stat-val">0</span></div>
+            <div class="stat"><span class="stat-name">Vont.</span><span class="stat-val">0</span></div>
+            <div class="stat"><span class="stat-name">Resist.</span><span class="stat-val highlight">20</span></div>
+          </div>
+          <div class="divider"></div>
+          <div class="attacks-title">Ataques</div>
+          <div class="attack">
+            <div class="attack-dot"></div>
+            <div class="attack-info">
+              <div class="attack-name">Mísseis</div>
+              <div class="attack-detail"><span class="dice">1d6</span> · 1 ação por foguete · usa Pontaria</div>
+            </div>
+          </div>
+          <div class="attack">
+            <div class="attack-dot"></div>
+            <div class="attack-info">
+              <div class="attack-name">Porrete</div>
+              <div class="attack-detail"><span class="dice">2d10</span></div>
+            </div>
+            <span class="cost">1 ação</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Goblin Gigante -->
+      <div class="card">
+        <div class="card-inner">
+          <div class="card-name">Goblin Gigante</div>
+          <div class="card-badge badge-goblin">Elite</div>
+          <div class="vitals">
+            <div class="vital vital-hp"><span class="vital-label">Vida</span><span class="vital-value">27</span></div>
+            <div class="vital vital-actions"><span class="vital-label">Ações</span><span class="vital-value">2</span></div>
+          </div>
+          <div class="stats">
+            <div class="stat"><span class="stat-name">Força</span><span class="stat-val highlight">20</span></div>
+            <div class="stat"><span class="stat-name">Agil.</span><span class="stat-val">0</span></div>
+            <div class="stat"><span class="stat-name">Pont.</span><span class="stat-val">0</span></div>
+            <div class="stat"><span class="stat-name">Intel.</span><span class="stat-val">0</span></div>
+            <div class="stat"><span class="stat-name">Vont.</span><span class="stat-val">0</span></div>
+            <div class="stat"><span class="stat-name">Resist.</span><span class="stat-val highlight">50</span></div>
+          </div>
+          <div class="divider"></div>
+          <div class="attacks-title">Ataques</div>
+          <div class="attack">
+            <div class="attack-dot"></div>
+            <div class="attack-info">
+              <div class="attack-name">Porrada</div>
+              <div class="attack-detail"><span class="dice">1d6 + 1d20</span></div>
+            </div>
+            <span class="cost">1 ação</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- ══════════════════════════════════════════════ ANÕES -->
+<section id="anoes" class="faction-anao">
+<div class="container">
+  <div class="section">
+    <div class="section-header">
+      <div class="section-line left"></div>
+      <div class="section-title">🟠 Anões</div>
+      <div class="section-line"></div>
+    </div>
+    <div class="section-rule">Não podem desviar · +5 em Força</div>
+
+    <div class="cards-grid">
+
+      <div class="card">
+        <div class="card-inner">
+          <div class="card-name">Rei Bjorn</div>
+          <div class="card-badge badge-boss">Boss</div>
+          <div class="vitals">
+            <div class="vital vital-hp"><span class="vital-label">Vida</span><span class="vital-value">50</span></div>
+            <div class="vital vital-actions"><span class="vital-label">Ações</span><span class="vital-value">1</span></div>
+          </div>
+          <div class="stats">
+            <div class="stat"><span class="stat-name">Força</span><span class="stat-val highlight">10</span></div>
+            <div class="stat"><span class="stat-name">Agil.</span><span class="stat-val">0</span></div>
+            <div class="stat"><span class="stat-name">Pont.</span><span class="stat-val">0</span></div>
+            <div class="stat"><span class="stat-name">Intel.</span><span class="stat-val">5</span></div>
+            <div class="stat"><span class="stat-name">Vont.</span><span class="stat-val">0</span></div>
+            <div class="stat"><span class="stat-name">Resist.</span><span class="stat-val highlight">20</span></div>
+          </div>
+          <div class="divider"></div>
+          <div class="attacks-title">Ataques</div>
+          <div class="attack">
+            <div class="attack-dot"></div>
+            <div class="attack-info">
+              <div class="attack-name">Marretada</div>
+              <div class="attack-detail"><span class="dice">1d12 + 1d10</span> em área</div>
+            </div>
+          </div>
+          <div class="attack">
+            <div class="attack-dot"></div>
+            <div class="attack-info">
+              <div class="attack-name">Porrada</div>
+              <div class="attack-detail"><span class="dice">1d6 + 1d10</span> — atordoa</div>
+            </div>
+          </div>
+          <div class="attack">
+            <div class="attack-dot"></div>
+            <div class="attack-info">
+              <div class="attack-name">Um por Todos</div>
+              <div class="attack-detail"><span class="dice">2d20 + 1d10</span> · área cone</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-inner">
+          <div class="card-name">Príncipe Ragnar</div>
+          <div class="card-badge badge-boss">Boss</div>
+          <div class="vitals">
+            <div class="vital vital-hp"><span class="vital-label">Vida</span><span class="vital-value">20</span></div>
+            <div class="vital vital-actions"><span class="vital-label">Ações</span><span class="vital-value">2</span></div>
+          </div>
+          <div class="stats">
+            <div class="stat"><span class="stat-name">Força</span><span class="stat-val">10</span></div>
+            <div class="stat"><span class="stat-name">Agil.</span><span class="stat-val">5</span></div>
+            <div class="stat"><span class="stat-name">Pont.</span><span class="stat-val">0</span></div>
+            <div class="stat"><span class="stat-name">Intel.</span><span class="stat-val">5</span></div>
+            <div class="stat"><span class="stat-name">Vont.</span><span class="stat-val highlight">10</span></div>
+            <div class="stat"><span class="stat-name">Resist.</span><span class="stat-val">5</span></div>
+          </div>
+          <div class="divider"></div>
+          <div class="attacks-title">Ataques</div>
+          <div class="attack">
+            <div class="attack-dot"></div>
+            <div class="attack-info">
+              <div class="attack-name">Leviatã</div>
+              <div class="attack-detail"><span class="dice">1d10 + 1d10</span> em 2 inimigos</div>
+            </div>
+          </div>
+          <div class="attack">
+            <div class="attack-dot"></div>
+            <div class="attack-info">
+              <div class="attack-name">Sobrecarga</div>
+              <div class="attack-detail"><span class="dice">1d10</span> em área · pode gastar rodada para cancelar ataques inimigos</div>
+            </div>
+          </div>
+          <div class="attack">
+            <div class="attack-dot"></div>
+            <div class="attack-info">
+              <div class="attack-name">⚠ Ragnarok</div>
+              <div class="attack-detail">Ao morrer, explode causando <span class="dice">3d20</span> em todos na sala</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- ══════════════════════════════════════════════ ASTRAIS -->
+<section id="astrais" class="faction-astral">
+<div class="container">
+  <div class="section">
+    <div class="section-header">
+      <div class="section-line left"></div>
+      <div class="section-title">🔵 Astrais</div>
+      <div class="section-line"></div>
+    </div>
+    <div class="section-rule">Sem Força nem Resistência · Dano muito elevado e alta Vontade</div>
+
+    <div class="cards-grid">
+
+      <div class="card">
+        <div class="card-inner">
+          <div class="card-name">Eleanor</div>
+          <div class="card-badge badge-astral">Astral</div>
+          <div class="vitals">
+            <div class="vital vital-hp"><span class="vital-label">Vida</span><span class="vital-value">20</span></div>
+            <div class="vital vital-actions"><span class="vital-label">Ações</span><span class="vital-value">2</span></div>
+          </div>
+          <div class="stats">
+            <div class="stat"><span class="stat-name">Força</span><span class="stat-val">0</span></div>
+            <div class="stat"><span class="stat-name">Agil.</span><span class="stat-val">5</span></div>
+            <div class="stat"><span class="stat-name">Pont.</span><span class="stat-val">0</span></div>
+            <div class="stat"><span class="stat-name">Intel.</span><span class="stat-val highlight">10</span></div>
+            <div class="stat"><span class="stat-name">Vont.</span><span class="stat-val highlight">15</span></div>
+            <div class="stat"><span class="stat-name">Resist.</span><span class="stat-val">0</span></div>
+          </div>
+          <div class="divider"></div>
+          <div class="attacks-title">Ataques</div>
+          <div class="attack">
+            <div class="attack-dot"></div>
+            <div class="attack-info">
+              <div class="attack-name">Bola de Plasma</div>
+              <div class="attack-detail"><span class="dice">1d10 + 1d15</span></div>
+            </div>
+          </div>
+          <div class="attack">
+            <div class="attack-dot"></div>
+            <div class="attack-info">
+              <div class="attack-name">Campo de Choque</div>
+              <div class="attack-detail"><span class="dice">1d15</span> em todos</div>
+            </div>
+          </div>
+          <div class="attack">
+            <div class="attack-dot"></div>
+            <div class="attack-info">
+              <div class="attack-name">Final Flash</div>
+              <div class="attack-detail"><span class="dice">3d15</span></div>
+            </div>
+            <span class="cost">4 ações</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-inner">
+          <div class="card-name">Kachan</div>
+          <div class="card-badge badge-astral">Astral</div>
+          <div class="vitals">
+            <div class="vital vital-hp"><span class="vital-label">Vida</span><span class="vital-value">80</span></div>
+            <div class="vital vital-actions"><span class="vital-label">Ações</span><span class="vital-value">5</span></div>
+          </div>
+          <div class="stats">
+            <div class="stat"><span class="stat-name">Força</span><span class="stat-val">15</span></div>
+            <div class="stat"><span class="stat-name">Agil.</span><span class="stat-val highlight">30</span></div>
+            <div class="stat"><span class="stat-name">Pont.</span><span class="stat-val highlight">25</span></div>
+            <div class="stat"><span class="stat-name">Intel.</span><span class="stat-val">15</span></div>
+            <div class="stat"><span class="stat-name">Vont.</span><span class="stat-val highlight">20</span></div>
+            <div class="stat"><span class="stat-name">Resist.</span><span class="stat-val">15</span></div>
+          </div>
+          <div class="divider"></div>
+          <div class="passives">
+            <div class="passives-title">Passivas</div>
+            <div class="passive"><span class="passive-icon">💥</span> Ataques contam como explosivos</div>
+            <div class="passive"><span class="passive-icon">🏃</span> Pode se mover por explosão sem gastar ação (1×/turno)</div>
+            <div class="passive"><span class="passive-icon">📈</span> A partir da rodada 3, ganha <span class="dice">+1d6</span> nos ataques</div>
+            <div class="passive"><span class="passive-icon">👁</span> Não pode ser surpreendido</div>
+          </div>
+          <div class="divider"></div>
+          <div class="attacks-title">Ataques</div>
+          <div class="attack"><div class="attack-dot"></div><div class="attack-info"><div class="attack-name">Explosão Direta</div><div class="attack-detail"><span class="dice">2d10</span></div></div><span class="cost">1 ação</span></div>
+          <div class="attack"><div class="attack-dot"></div><div class="attack-info"><div class="attack-name">Rajada Explosiva</div><div class="attack-detail">3× <span class="dice">1d8</span></div></div><span class="cost">2 ações</span></div>
+          <div class="attack"><div class="attack-dot"></div><div class="attack-info"><div class="attack-name">Tiro de Impacto</div><div class="attack-detail"><span class="dice">2d12</span></div></div><span class="cost">2 ações</span></div>
+          <div class="attack"><div class="attack-dot"></div><div class="attack-info"><div class="attack-name">Explosão em Área</div><div class="attack-detail"><span class="dice">2d10</span> em todos até 4m</div></div><span class="cost">2 ações</span></div>
+          <div class="attack"><div class="attack-dot"></div><div class="attack-info"><div class="attack-name">Howitzer Impact</div><div class="attack-detail"><span class="dice">4d10</span></div></div><span class="cost">3 ações</span></div>
+          <div class="attack"><div class="attack-dot"></div><div class="attack-info"><div class="attack-name">Stun Grenade</div><div class="attack-detail"><span class="dice">1d6</span> em todos até 5m</div></div><span class="cost">2 ações</span></div>
+          <div class="attack"><div class="attack-dot"></div><div class="attack-info"><div class="attack-name">Explosão Perfurante</div><div class="attack-detail"><span class="dice">3d12</span></div></div><span class="cost">2 ações</span></div>
+          <div class="attack"><div class="attack-dot"></div><div class="attack-info"><div class="attack-name">AP Shot</div><div class="attack-detail"><span class="dice">4d10</span></div></div><span class="cost">3 ações</span></div>
+          <div class="attack"><div class="attack-dot"></div><div class="attack-info"><div class="attack-name">Cluster</div><div class="attack-detail"><span class="dice">2d12</span> em até 4 alvos</div></div><span class="cost">3 ações</span></div>
+          <div class="attack"><div class="attack-dot"></div><div class="attack-info"><div class="attack-name">💀 Murder God Explosion</div><div class="attack-detail"><span class="dice">5d12</span></div></div><span class="cost">4 ações</span></div>
+        </div>
+      </div>
+
+      <!-- Dragão -->
+      <div class="card">
+        <div class="card-inner">
+          <div class="card-name">Dragão</div>
+          <div class="card-badge badge-boss">Boss</div>
+          <div class="vitals">
+            <div class="vital vital-hp"><span class="vital-label">Vida</span><span class="vital-value">110</span></div>
+            <div class="vital vital-actions"><span class="vital-label">Ações</span><span class="vital-value">1</span></div>
+          </div>
+          <div class="stats">
+            <div class="stat"><span class="stat-name">Força</span><span class="stat-val highlight">30</span></div>
+            <div class="stat"><span class="stat-name">Agil.</span><span class="stat-val">0</span></div>
+            <div class="stat"><span class="stat-name">Pont.</span><span class="stat-val">0</span></div>
+            <div class="stat"><span class="stat-name">Intel.</span><span class="stat-val">0</span></div>
+            <div class="stat"><span class="stat-name">Vont.</span><span class="stat-val">0</span></div>
+            <div class="stat"><span class="stat-name">Resist.</span><span class="stat-val highlight">50</span></div>
+          </div>
+          <div class="divider"></div>
+          <div class="attacks-title">Ataques</div>
+          <div class="attack"><div class="attack-dot"></div><div class="attack-info"><div class="attack-name">Baforada</div><div class="attack-detail"><span class="dice">1d30 + 1d10</span></div></div></div>
+          <div class="attack"><div class="attack-dot"></div><div class="attack-info"><div class="attack-name">Pisão</div><div class="attack-detail"><span class="dice">1d15</span> em todos</div></div></div>
+          <div class="attack"><div class="attack-dot"></div><div class="attack-info"><div class="attack-name">Asada</div><div class="attack-detail">Joga todos para longe</div></div></div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- ══════════════════════════════════════════════ TITÃS -->
+<section id="titãs" class="faction-titã">
+<div class="container">
+  <div class="section">
+    <div class="section-header">
+      <div class="section-line left"></div>
+      <div class="section-title">🟣 Titãs</div>
+      <div class="section-line"></div>
+    </div>
+    <div class="section-rule">Para cada 10 de dano recebido, +1 de Força</div>
+
+    <div class="cards-grid">
+      <div class="card">
+        <div class="card-inner">
+          <div class="card-name">Rennai</div>
+          <div class="card-badge badge-titã">Titã</div>
+          <div class="vitals">
+            <div class="vital vital-hp"><span class="vital-label">Vida</span><span class="vital-value">100</span></div>
+            <div class="vital vital-actions"><span class="vital-label">Ações</span><span class="vital-value">1</span></div>
+          </div>
+          <div class="stats">
+            <div class="stat"><span class="stat-name">Força</span><span class="stat-val highlight">20</span></div>
+            <div class="stat"><span class="stat-name">Agil.</span><span class="stat-val">10</span></div>
+            <div class="stat"><span class="stat-name">Pont.</span><span class="stat-val">0</span></div>
+            <div class="stat"><span class="stat-name">Intel.</span><span class="stat-val">10</span></div>
+            <div class="stat"><span class="stat-name">Vont.</span><span class="stat-val">10</span></div>
+            <div class="stat"><span class="stat-name">Resist.</span><span class="stat-val highlight">30</span></div>
+          </div>
+          <div class="divider"></div>
+          <div class="attacks-title">Ataques</div>
+          <div class="attack"><div class="attack-dot"></div><div class="attack-info"><div class="attack-name">Todos</div><div class="attack-detail">Acesso a todos os ataques disponíveis</div></div></div>
+          <div class="card-note">Passiva de titã: a cada 10 de dano recebido, ganha +1 de Força permanente durante o combate.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- ══════════════════════════════════════════════ MÁSCARAS -->
+<section id="mascaras" class="faction-especial">
+<div class="container">
+  <div class="section">
+    <div class="section-header">
+      <div class="section-line left"></div>
+      <div class="section-title">✨ Máscaras</div>
+      <div class="section-line"></div>
+    </div>
+    <div class="section-rule">Itens especiais que concedem habilidades únicas</div>
+
+    <div class="cards-grid">
+
+      <div class="card mask-card">
+        <div class="card-inner">
+          <div class="mask-icon">⚡</div>
+          <div class="card-name">Máscara da Energia</div>
+          <div class="mask-bonus">+10 Agilidade</div>
+          <div class="divider"></div>
+          <div class="attacks-title">Ativa — Passo Instantâneo</div>
+          <div class="passive"><span class="passive-icon">🌀</span> Teleporta a curta distância sem custo de mobilidade (1×/turno)</div>
+          <div class="attacks-title" style="margin-top:12px;">Passiva — Interferência Energética</div>
+          <div class="passive"><span class="passive-icon">⚙️</span> Objetos mecânicos, construtos e mecanismos próximos podem ser desativados com toque ou presença prolongada</div>
+          <div class="card-note">⚠ Limitação: Não funciona bem em ambientes naturais ou puramente orgânicos.</div>
+        </div>
+      </div>
+
+      <div class="card mask-card">
+        <div class="card-inner">
+          <div class="mask-icon">🩸</div>
+          <div class="card-name">Máscara do Sangue</div>
+          <div class="mask-bonus">+10 Vontade</div>
+          <div class="divider"></div>
+          <div class="attacks-title">Ativa — Dreno Vital</div>
+          <div class="passive"><span class="passive-icon">❤️</span> Ao causar dano corpo a corpo, cura <span class="dice">1d4</span> de vida por golpe bem-sucedido</div>
+          <div class="attacks-title" style="margin-top:12px;">Passiva — Controle Hemático</div>
+          <div class="passive"><span class="passive-icon">🛡️</span> Não sofre penalidades por sangramento e pode estancar ferimentos próprios automaticamente</div>
+          <div class="card-note">⚠ Limitação: Ineficaz contra mortos-vivos, construtos e criaturas sem sangue.</div>
+        </div>
+      </div>
+
+      <div class="card mask-card">
+        <div class="card-inner">
+          <div class="mask-icon">☠️</div>
+          <div class="card-name">Máscara da Morte</div>
+          <div class="mask-bonus">+10 Inteligência</div>
+          <div class="divider"></div>
+          <div class="attacks-title">Ativa — Sopro da Morte</div>
+          <div class="passive"><span class="passive-icon">💀</span> Inimigos abatidos não podem ser revividos ou levantados magicamente</div>
+          <div class="attacks-title" style="margin-top:12px;">Passiva — Aura de Decadência</div>
+          <div class="passive"><span class="passive-icon">🔥</span> Armas e ataques causam deterioração adicional em armaduras, escudos e estruturas</div>
+          <div class="card-note">⚠ Limitação: Penalidade em interações sociais positivas (presença perturbadora).</div>
+        </div>
+      </div>
+
+      <div class="card mask-card">
+        <div class="card-inner">
+          <div class="mask-icon">🪨</div>
+          <div class="card-name">Máscara da Terra</div>
+          <div class="mask-bonus">+10 Resistência</div>
+          <div class="divider"></div>
+          <div class="attacks-title">Ativa — Reformulação</div>
+          <div class="passive"><span class="passive-icon">🪨</span> Molda e transforma objetos inorgânicos ao toque (pedra, metal, solo) dentro de limites razoáveis</div>
+          <div class="attacks-title" style="margin-top:12px;">Passiva — Corpo Inabalável</div>
+          <div class="passive"><span class="passive-icon">⛰️</span> Não pode ser derrubado, empurrado ou movido contra a vontade facilmente</div>
+          <div class="card-note">⚠ Limitação: Movimento levemente reduzido fora de combate.</div>
+        </div>
+      </div>
+
+      <div class="card mask-card">
+        <div class="card-inner">
+          <div class="mask-icon">🌱</div>
+          <div class="card-name">Máscara da Vida</div>
+          <div class="mask-bonus">+10 Força</div>
+          <div class="divider"></div>
+          <div class="attacks-title">Ativa — Gold Experience</div>
+          <div class="passive"><span class="passive-icon">🌿</span> Cria formas de vida simples a partir de matéria não viva (plantas, criaturas pequenas, auxiliares temporários)</div>
+          <div class="attacks-title" style="margin-top:12px;">Passiva — Regeneração Natural</div>
+          <div class="passive"><span class="passive-icon">💚</span> Recupera <span class="dice">1d8</span> de vida por turno fora de combate ou sob luz natural</div>
+          <div class="card-note">⚠ Limitação: Criações exigem concentração; se perder foco, elas enfraquecem.</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- ══════════════════════════════════════════════ ELFOS -->
+<section id="elfos" class="faction-elfo">
+<div class="container">
+  <div class="section">
+    <div class="section-header">
+      <div class="section-line left"></div>
+      <div class="section-title">🩵 Elfos</div>
+      <div class="section-line"></div>
+    </div>
+    <div class="section-rule">Ágeis e precisos — mestres do combate à distância</div>
+
+    <div class="cards-grid">
+
+      <div class="card">
+        <div class="card-inner">
+          <div class="card-name">Billy</div>
+          <div class="card-badge badge-elfo">Elfo</div>
+          <div class="vitals">
+            <div class="vital vital-hp"><span class="vital-label">Vida</span><span class="vital-value">20</span></div>
+            <div class="vital vital-actions"><span class="vital-label">Ações</span><span class="vital-value">2</span></div>
+          </div>
+          <div class="stats">
+            <div class="stat"><span class="stat-name">Força</span><span class="stat-val">0</span></div>
+            <div class="stat"><span class="stat-name">Agil.</span><span class="stat-val">5</span></div>
+            <div class="stat"><span class="stat-name">Pont.</span><span class="stat-val">5</span></div>
+            <div class="stat"><span class="stat-name">Intel.</span><span class="stat-val">5</span></div>
+            <div class="stat"><span class="stat-name">Vont.</span><span class="stat-val">0</span></div>
+            <div class="stat"><span class="stat-name">Resist.</span><span class="stat-val">5</span></div>
+          </div>
+          <div class="divider"></div>
+          <div class="attacks-title">Ataques</div>
+          <div class="attack">
+            <div class="attack-dot"></div>
+            <div class="attack-info">
+              <div class="attack-name">Pistola Automática</div>
+              <div class="attack-detail">Cada ação dispara <span class="dice">1d6</span> dano · A pistola não emite nenhum som</div>
+            </div>
+            <span class="cost">1 ação</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-inner">
+          <div class="card-name">Celebrian</div>
+          <div class="card-badge badge-elfo">Elfo — Elite</div>
+          <div class="vitals">
+            <div class="vital vital-hp"><span class="vital-label">Vida</span><span class="vital-value">60</span></div>
+            <div class="vital vital-actions"><span class="vital-label">Ações</span><span class="vital-value">4</span></div>
+          </div>
+          <div class="stats">
+            <div class="stat"><span class="stat-name">Força</span><span class="stat-val">10</span></div>
+            <div class="stat"><span class="stat-name">Agil.</span><span class="stat-val highlight">20</span></div>
+            <div class="stat"><span class="stat-name">Pont.</span><span class="stat-val highlight">20</span></div>
+            <div class="stat"><span class="stat-name">Intel.</span><span class="stat-val">10</span></div>
+            <div class="stat"><span class="stat-name">Vont.</span><span class="stat-val">15</span></div>
+            <div class="stat"><span class="stat-name">Resist.</span><span class="stat-val">10</span></div>
+          </div>
+          <div class="divider"></div>
+          <div class="passives">
+            <div class="passives-title">Passivas</div>
+            <div class="passive"><span class="passive-icon">🌀</span> Desvia 1× por turno sem gastar ação</div>
+            <div class="passive"><span class="passive-icon">👁</span> Não pode ser surpreendida</div>
+            <div class="passive"><span class="passive-icon">🛡️</span> Primeira vez que sofreria dano na rodada, pode desviar automaticamente</div>
+          </div>
+          <div class="divider"></div>
+          <div class="attacks-title">Ataques</div>
+          <div class="attack"><div class="attack-dot"></div><div class="attack-info"><div class="attack-name">Arco de Celebrian</div><div class="attack-detail"><span class="dice">2d12</span></div></div><span class="cost">1 ação</span></div>
+          <div class="attack"><div class="attack-dot"></div><div class="attack-info"><div class="attack-name">Dança das Espadas</div><div class="attack-detail"><span class="dice">2d10</span> em todos em 4m</div></div><span class="cost">2 ações</span></div>
+          <div class="attack"><div class="attack-dot"></div><div class="attack-info"><div class="attack-name">Chuva Élfica</div><div class="attack-detail">3 alvos · <span class="dice">2d8</span> cada</div></div><span class="cost">2 ações</span></div>
+          <div class="attack"><div class="attack-dot"></div><div class="attack-info"><div class="attack-name">Flecha do Coração Verde</div><div class="attack-detail"><span class="dice">3d10</span></div></div><span class="cost">2 ações</span></div>
+          <div class="attack"><div class="attack-dot"></div><div class="attack-info"><div class="attack-name">Passo da Folha</div><div class="attack-detail">Reposiciona sem tomar ataque</div></div><span class="cost">1 ação</span></div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- ══════════════════════════════════════════════ DRACÔNICOS -->
+<section id="draconicos" class="faction-draconico">
+<div class="container">
+  <div class="section">
+    <div class="section-header">
+      <div class="section-line left"></div>
+      <div class="section-title">🔴 Dracônicos</div>
+      <div class="section-line"></div>
+    </div>
+    <div class="section-rule">Escamas de ferro e veneno nas veias</div>
+
+    <div class="cards-grid boss-grid">
+
+      <div class="card">
+        <div class="boss-header">
+          <div class="boss-label">Boss Dracônico</div>
+          <div class="card-name" style="margin-bottom:6px;">Medrash</div>
+          <div class="boss-meta">Guerreiro lendário · 300 anos de coroa</div>
+        </div>
+        <div class="card-inner">
+          <div class="card-badge badge-boss">Boss</div>
+          <div class="vitals">
+            <div class="vital vital-hp"><span class="vital-label">Vida</span><span class="vital-value">180</span></div>
+            <div class="vital vital-actions"><span class="vital-label">Ações</span><span class="vital-value">4</span></div>
+          </div>
+          <div class="stats">
+            <div class="stat"><span class="stat-name">Força</span><span class="stat-val highlight">30</span></div>
+            <div class="stat"><span class="stat-name">Agil.</span><span class="stat-val">20</span></div>
+            <div class="stat"><span class="stat-name">Pont.</span><span class="stat-val">15</span></div>
+            <div class="stat"><span class="stat-name">Intel.</span><span class="stat-val">15</span></div>
+            <div class="stat"><span class="stat-name">Vont.</span><span class="stat-val">25</span></div>
+            <div class="stat"><span class="stat-name">Resist.</span><span class="stat-val highlight">35</span></div>
+          </div>
+          <div class="divider"></div>
+          <div class="passives">
+            <div class="passives-title">Passivas</div>
+            <div class="passive"><span class="passive-icon">🛡️</span> Reduz dano físico em 10</div>
+            <div class="passive"><span class="passive-icon">☠️</span> Quem bate corpo a corpo sofre <span class="dice">1d6</span> ácido</div>
+            <div class="passive"><span class="passive-icon">🦅</span> Pode voar 1× por rodada sem gastar ação</div>
+            <div class="passive"><span class="passive-icon">⛰️</span> Não pode ser derrubado ou empurrado</div>
+          </div>
+          <div class="divider"></div>
+          <div class="attacks-title">Ataques — Corpo</div>
+          <div class="attack"><div class="attack-dot"></div><div class="attack-info"><div class="attack-name">Garras do Imperador</div><div class="attack-detail"><span class="dice">2d12</span></div></div><span class="cost">1 ação</span></div>
+          <div class="attack"><div class="attack-dot"></div><div class="attack-info"><div class="attack-name">Mordida Corrosiva</div><div class="attack-detail"><span class="dice">1d12 + 1d10</span></div></div><span class="cost">1 ação</span></div>
+          <div class="attack"><div class="attack-dot"></div><div class="attack-info"><div class="attack-name">Cauda de Julgamento</div><div class="attack-detail"><span class="dice">2d10</span> em área</div></div><span class="cost">1 ação</span></div>
+          <div class="attack"><div class="attack-dot"></div><div class="attack-info"><div class="attack-name">Rasante do Tirano</div><div class="attack-detail"><span class="dice">2d12</span> em linha</div></div><span class="cost">2 ações</span></div>
+          <div class="attack"><div class="attack-dot"></div><div class="attack-info"><div class="attack-name">Baforada Ácida</div><div class="attack-detail"><span class="dice">3d10</span> em cone</div></div><span class="cost">2 ações</span></div>
+          <div class="attack"><div class="attack-dot"></div><div class="attack-info"><div class="attack-name">Chuva Verde</div><div class="attack-detail"><span class="dice">2d8</span> em todos</div></div><span class="cost">3 ações</span></div>
+          <div class="attack"><div class="attack-dot"></div><div class="attack-info"><div class="attack-name">Mergulho Dracônico</div><div class="attack-detail"><span class="dice">3d12</span></div></div><span class="cost">2 ações</span></div>
+          <div class="divider"></div>
+          <div class="attacks-title">Com Espada</div>
+          <div class="attack"><div class="attack-dot"></div><div class="attack-info"><div class="attack-name">Corte do Rei</div><div class="attack-detail"><span class="dice">2d12 + 1d6</span> ácido</div></div><span class="cost">1 ação</span></div>
+          <div class="attack"><div class="attack-dot"></div><div class="attack-info"><div class="attack-name">Fenda Vulcânica</div><div class="attack-detail"><span class="dice">2d10</span> em linha</div></div><span class="cost">2 ações</span></div>
+          <div class="attack"><div class="attack-dot"></div><div class="attack-info"><div class="attack-name">Coluna do Dragão Azul</div><div class="attack-detail"><span class="dice">3d12</span></div></div><span class="cost">2 ações</span></div>
+          <div class="attack"><div class="attack-dot"></div><div class="attack-info"><div class="attack-name">Dança do Último Campeão</div><div class="attack-detail">3 ataques de <span class="dice">2d10</span></div></div><span class="cost">3 ações</span></div>
+          <div class="attack"><div class="attack-dot"></div><div class="attack-info"><div class="attack-name">Guarda-Partida</div><div class="attack-detail"><span class="dice">2d8 + 2d8</span> ácido</div></div><span class="cost">2 ações</span></div>
+          <div class="attack"><div class="attack-dot"></div><div class="attack-info"><div class="attack-name">Círculo da Ruína</div><div class="attack-detail"><span class="dice">2d12</span> em área</div></div><span class="cost">2 ações</span></div>
+          <div class="divider"></div>
+          <div class="attacks-title">⭐ Supremos</div>
+          <div class="attack"><div class="attack-dot"></div><div class="attack-info"><div class="attack-name">Sopro do Fim Verde</div><div class="attack-detail"><span class="dice">4d12</span> em cone</div></div><span class="cost">4 ações</span></div>
+          <div class="attack"><div class="attack-dot"></div><div class="attack-info"><div class="attack-name">Trono do Vulcão</div><div class="attack-detail"><span class="dice">3d10</span> em todos + <span class="dice">2d10</span> em 1 alvo</div></div><span class="cost">3 ações</span></div>
+          <div class="attack"><div class="attack-dot"></div><div class="attack-info"><div class="attack-name">300 Anos de Coroa</div><div class="attack-detail"><span class="dice">5d10</span></div></div><span class="cost">4 ações</span></div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- ══════════════════════════════════════════════ MEIO-ANIMAIS -->
+<section id="meio-animais" class="faction-meio-animal">
+<div class="container">
+  <div class="section">
+    <div class="section-header">
+      <div class="section-line left"></div>
+      <div class="section-title">🐅 Meio-Animais</div>
+      <div class="section-line"></div>
+    </div>
+    <div class="section-rule">Guardiões da fauna — Boss de Nível 25</div>
+
+    <div class="cards-grid boss-grid">
+
+      <!-- Régis -->
+      <div class="card">
+        <div class="boss-header">
+          <div class="boss-label">🐅 Boss — Nível 25</div>
+          <div class="card-name" style="margin-bottom:6px;">Régis — O Guardião da Fauna</div>
+          <div class="boss-meta">Raça: Meio-tigre albino · Classe: Cuidador (Força + Agilidade)</div>
+        </div>
+        <div class="card-inner">
+          <div class="card-badge badge-boss">Boss</div>
+          <div class="vitals">
+            <div class="vital vital-hp"><span class="vital-label">Vida</span><span class="vital-value">180</span></div>
+            <div class="vital vital-actions"><span class="vital-label">Ações</span><span class="vital-value">4</span></div>
+          </div>
+          <div class="stats">
+            <div class="stat"><span class="stat-name">Força</span><span class="stat-val">20</span></div>
+            <div class="stat"><span class="stat-name">Agil.</span><span class="stat-val highlight">25</span></div>
+            <div class="stat"><span class="stat-name">Pont.</span><span class="stat-val">10</span></div>
+            <div class="stat"><span class="stat-name">Intel.</span><span class="stat-val">12</span></div>
+            <div class="stat"><span class="stat-name">Vont.</span><span class="stat-val">15</span></div>
+            <div class="stat"><span class="stat-name">Resist.</span><span class="stat-val">15</span></div>
+          </div>
+          <div class="divider"></div>
+          <div class="passives">
+            <div class="passives-title">Passiva de Boss — Instinto Alfa</div>
+            <div class="passive"><span class="passive-icon">📈</span> A cada 20 de vida perdida, ganha +1 ação no próximo turno (acumula até +3) e +2 Agilidade por 1 turno</div>
+          </div>
+          <div class="divider"></div>
+          <div class="attacks-title">Ataques</div>
+          <div class="attack"><div class="attack-dot"></div><div class="attack-info"><div class="attack-name">Rasgar a Selva</div><div class="attack-detail"><span class="dice">2d12 + Agilidade</span> · 2 acertos no mesmo alvo → sangramento <span class="dice">1d8</span> por 2 turnos</div></div><span class="cost">1 ação</span></div>
+          <div class="attack"><div class="attack-dot"></div><div class="attack-info"><div class="attack-name">Golpe Triplo Felino</div><div class="attack-detail">3 ataques de <span class="dice">1d10</span> cada · pode dividir entre alvos · todos no mesmo alvo → paralisia 1 turno</div></div><span class="cost">2 ações</span></div>
+          <div class="attack"><div class="attack-dot"></div><div class="attack-info"><div class="attack-name">Salto Predatório</div><div class="attack-detail"><span class="dice">2d20 + Força</span> · avança até 6m · derruba (teste Resist. 15)</div></div><span class="cost">2 ações</span></div>
+          <div class="attack"><div class="attack-dot"></div><div class="attack-info"><div class="attack-name">Grito do Protetor</div><div class="attack-detail">–2 Força dos jogadores por 1 turno · animais hostis entram em fúria</div></div><span class="cost">1 ação</span></div>
+          <div class="divider"></div>
+          <div class="attacks-title">⭐ Ultimate — Fúria do Guardião <span style="font-size:11px;color:var(--gold-dim);">(recarrega a cada 3 turnos)</span></div>
+          <div class="attack"><div class="attack-dot"></div><div class="attack-info"><div class="attack-name">Fúria do Guardião</div><div class="attack-detail">Ataca TODOS com <span class="dice">2d12</span> · depois usa Salto Predatório no alvo com menor vida</div></div><span class="cost">4 ações</span></div>
+        </div>
+      </div>
+
+      <!-- Pat -->
+      <div class="card">
+        <div class="boss-header">
+          <div class="boss-label">🦏 Boss — Nível 25</div>
+          <div class="card-name" style="margin-bottom:6px;">Pat — Defensor dos Inocentes</div>
+          <div class="boss-meta">Raça: Meio-rinoceronte · Classe: Defensor (máxima resistência)</div>
+        </div>
+        <div class="card-inner">
+          <div class="card-badge badge-boss">Boss Tanque</div>
+          <div class="vitals">
+            <div class="vital vital-hp"><span class="vital-label">Vida</span><span class="vital-value">260</span></div>
+            <div class="vital vital-actions"><span class="vital-label">Ações</span><span class="vital-value">3</span></div>
+          </div>
+          <div class="stats">
+            <div class="stat"><span class="stat-name">Força</span><span class="stat-val highlight">22</span></div>
+            <div class="stat"><span class="stat-name">Agil.</span><span class="stat-val">5</span></div>
+            <div class="stat"><span class="stat-name">Pont.</span><span class="stat-val">8</span></div>
+            <div class="stat"><span class="stat-name">Intel.</span><span class="stat-val">10</span></div>
+            <div class="stat"><span class="stat-name">Vont.</span><span class="stat-val">15</span></div>
+            <div class="stat"><span class="stat-name">Resist.</span><span class="stat-val highlight">30</span></div>
+          </div>
+          <div class="divider"></div>
+          <div class="passives">
+            <div class="passives-title">Passiva de Boss — Fortaleza Imortal</div>
+            <div class="passive"><span class="passive-icon">🛡️</span> Reduz 6 de dano de TODAS as fontes (abaixo de 100 vida → reduz 12)</div>
+            <div class="passive"><span class="passive-icon">⛔</span> Imune a empurrão, agarrão, sangramento e congelamento</div>
+          </div>
+          <div class="divider"></div>
+          <div class="attacks-title">Ataques</div>
+          <div class="attack"><div class="attack-dot"></div><div class="attack-info"><div class="attack-name">Impacto Triturante</div><div class="attack-detail"><span class="dice">2d12 + Força</span> · 20% chance quebrar osso (–5 Força/turno)</div></div><span class="cost">1 ação</span></div>
+          <div class="attack"><div class="attack-dot"></div><div class="attack-info"><div class="attack-name">Investida de Rinoceronte</div><div class="attack-detail"><span class="dice">3d12 + Força</span> · anda 8m · alvo é arremessado 3m e atordoado</div></div><span class="cost">2 ações</span></div>
+          <div class="attack"><div class="attack-dot"></div><div class="attack-info"><div class="attack-name">Martelo dos Inocentes</div><div class="attack-detail"><span class="dice">2d20</span> · dano dobrado contra alvo já atordoado</div></div><span class="cost">2 ações</span></div>
+          <div class="attack"><div class="attack-dot"></div><div class="attack-info"><div class="attack-name">Batida Sísmica</div><div class="attack-detail"><span class="dice">2d10</span> em área (6m) · teste Agilidade 15 ou cai derrubado</div></div><span class="cost">3 ações</span></div>
+          <div class="divider"></div>
+          <div class="attacks-title">⭐ Ultimate — Parede Absoluta <span style="font-size:11px;color:var(--gold-dim);">(1× a cada 3 turnos)</span></div>
+          <div class="attack"><div class="attack-dot"></div><div class="attack-info"><div class="attack-name">Parede Absoluta</div><div class="attack-detail">Por 2 turnos: recebe metade do dano · ataques físicos causam <span class="dice">1d10</span> de retorno ao atacante · +10 Resistência</div></div><span class="cost">3 ações</span></div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- ══════════════════════════════════════════════ NPCs -->
+<section id="npcs" class="faction-especial">
+<div class="container">
+  <div class="section">
+    <div class="section-header">
+      <div class="section-line left"></div>
+      <div class="section-title">🟡 NPCs</div>
+      <div class="section-line"></div>
+    </div>
+    <div class="section-rule">Aliados e personagens de suporte</div>
+
+    <div class="cards-grid">
+      <div class="card npc-card">
+        <div class="card-inner">
+          <div class="card-name">Rollo, o Logístico</div>
+          <div class="card-badge badge-npc">NPC — Missões</div>
+          <div class="card-note">Responsável por distribuir missões aos aventureiros.</div>
+          <div class="divider"></div>
+          <div class="missions">
+            <div class="mission">
+              <div class="mission-num">1ª Missão</div>
+              <div class="mission-title">Minérios Profundos</div>
+              <div class="mission-desc">Os aventureiros procuram minérios para melhorar equipamentos. Inimigos: Toupeiras Mutantes.</div>
+            </div>
+            <div class="mission">
+              <div class="mission-num">2ª Missão</div>
+              <div class="mission-title">Rachadura na Defesa</div>
+              <div class="mission-desc">O observatório está danificado. Rollo precisa de ajuda para reparar as defesas contra dragões. Testes de Inteligência.</div>
+            </div>
+            <div class="mission">
+              <div class="mission-num">3ª Missão</div>
+              <div class="mission-title">Infiltração</div>
+              <div class="mission-desc">Infiltrar nos túneis goblins e resgatar Eleanor. Rollo pede para levar Ragnar como apoio.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</section>
+
+<footer>⚔ Bestiário · Compêndio de Criaturas ⚔</footer>
+
+</body>
+</html>
